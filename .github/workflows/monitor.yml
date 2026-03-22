@@ -1,0 +1,21 @@
+name: Commodity FR Monitor
+
+on:
+  schedule:
+    - cron: '55 * * * *'   # 毎時 :55 に実行 (UTC)
+  workflow_dispatch:        # 手動実行も可能
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run FR monitor
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python3 monitor_commodity_fr.py
